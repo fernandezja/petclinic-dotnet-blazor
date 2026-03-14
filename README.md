@@ -1,7 +1,11 @@
 # PetClinic (.NET 10 + Blazor Server) | A .NET Port of Spring PetClinic
+
+[![CI](https://github.com/fernandezja/petclinic-dotnet-blazor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fernandezja/petclinic-dotnet-blazor/actions/workflows/ci.yml)
+
 This repository is a non-official .NET 10 port of [Spring PetClinic](https://github.com/spring-projects/spring-petclinic), built with Blazor Server and Entity Framework Core.
 
 Its purpose is to reproduce the original application's core functionality, domain model, and user experience, while leveraging modern .NET architectural patterns and practices such as clean layering, async/await, validation, automated testing, containerization with Docker, localization, and caching strategies.
+
 
 
 > ⚠ **Non-Official Port Notice**
