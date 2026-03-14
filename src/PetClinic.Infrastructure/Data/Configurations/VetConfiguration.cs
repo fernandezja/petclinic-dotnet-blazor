@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetClinic.Domain.Vets;
-
 namespace PetClinic.Infrastructure.Data.Configurations;
 
 public class VetConfiguration : IEntityTypeConfiguration<Vet>

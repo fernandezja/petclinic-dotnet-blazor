@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using PetClinic.Infrastructure.Data;
 using PetClinic.Infrastructure.Repositories;
 

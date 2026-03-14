@@ -1,5 +1,3 @@
-using PetClinic.Domain.Vets;
-
 namespace PetClinic.Infrastructure.Data;
 
 public class PetClinicDbContext(DbContextOptions<PetClinicDbContext> options) : DbContext(options)

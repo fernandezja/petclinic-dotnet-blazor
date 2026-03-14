@@ -1,6 +1,3 @@
-using PetClinic.Application.Vets.Dtos;
-using PetClinic.Application.Vets.Queries;
-
 namespace PetClinic.Application.Vets;
 
 public interface IVetService

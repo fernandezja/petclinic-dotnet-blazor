@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Options;
-using PetClinic.Domain.Vets;
 using PetClinic.Infrastructure.Data;
 
 namespace PetClinic.Infrastructure.Repositories;

@@ -1,5 +1,3 @@
-using PetClinic.Application.Owners.Commands;
-
 namespace PetClinic.Application.Owners.Validators;
 
 public class CreateOwnerCommandValidator : AbstractValidator<CreateOwnerCommand>

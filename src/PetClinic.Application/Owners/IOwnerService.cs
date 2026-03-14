@@ -1,6 +1,3 @@
-using PetClinic.Application.Owners.Commands;
-using PetClinic.Application.Owners.Queries;
-
 namespace PetClinic.Application.Owners;
 
 public interface IOwnerService

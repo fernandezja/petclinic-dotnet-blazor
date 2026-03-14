@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace PetClinic.Infrastructure.Data.Configurations;
 
 public class PetTypeConfiguration : IEntityTypeConfiguration<PetType>

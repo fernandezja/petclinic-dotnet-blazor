@@ -1,7 +1,3 @@
-using PetClinic.Application.Owners.Commands;
-using PetClinic.Application.Owners.Queries;
-using PetClinic.Domain.Exceptions;
-
 namespace PetClinic.Application.Owners;
 
 public class OwnerService(IOwnerRepository ownerRepository, IPetTypeRepository petTypeRepository) : IOwnerService

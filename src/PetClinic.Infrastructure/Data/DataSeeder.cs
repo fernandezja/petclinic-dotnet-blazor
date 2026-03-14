@@ -1,6 +1,3 @@
-using PetClinic.Domain.Vets;
-using PetClinic.Infrastructure.Data;
-
 namespace PetClinic.Infrastructure.Data;
 
 public static class DataSeeder
