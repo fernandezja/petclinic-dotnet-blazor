@@ -1,0 +1,98 @@
+@page "/owners/{OwnerId:int}/pets/{PetId:int}/visits/new"
+@rendermode InteractiveServer
+@inject IOwnerService OwnerService
+@inject NavigationManager Nav
+@inject IValidator<AddVisitCommand> Validator
+
+<PageTitle>Add Visit — PetClinic</PageTitle>
+
+@if (pet is not null)
+{
+    <h2>New Visit</h2>
+
+    <b>Pet</b>
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Name</th><th>Birth Date</th><th>Type</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@pet.Name</td>
+                <td>@pet.BirthDate?.ToString("yyyy-MM-dd")</td>
+                <td>@pet.TypeName</td>
+            </tr>
+        </tbody>
+    </table>
+
+    @if (pet.Visits.Count > 0)
+    {
+        <b>Previous Visits</b>
+        <table class="table table-striped">
+            <thead>
+                <tr><th>Visit Date</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var v in pet.Visits)
+                {
+                    <tr>
+                        <td>@v.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@v.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <h2>Add Visit</h2>
+    <form class="form-horizontal" @onsubmit="Submit" @onsubmit:preventDefault>
+        <div class="form-group has-feedback">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Visit Date</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="date" @bind="date" />
+                </div>
+            </div>
+            <InputField TValue="string" Label="Description" Value="@description" ValueChanged="v => description = v"
+                        ErrorMessage="@GetError("Description")" />
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary" type="submit">Add Visit</button>
+            </div>
+        </div>
+    </form>
+}
+
+@code {
+    [Parameter] public int OwnerId { get; set; }
+    [Parameter] public int PetId { get; set; }
+
+    private PetDto? pet;
+    private DateOnly date = DateOnly.FromDateTime(DateTime.Today);
+    private string? description;
+    private Dictionary<string, string> errors = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var owner = await OwnerService.GetOwnerByIdAsync(OwnerId);
+        pet = owner?.Pets.FirstOrDefault(p => p.Id == PetId);
+    }
+
+    private async Task Submit()
+    {
+        errors = [];
+        var date = this.date;
+        var cmd = new AddVisitCommand(OwnerId, PetId, date, description ?? "");
+        var validation = await Validator.ValidateAsync(cmd);
+        if (!validation.IsValid)
+        {
+            errors = validation.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
+            return;
+        }
+        await OwnerService.AddVisitAsync(cmd);
+        Nav.NavigateTo($"/owners/{OwnerId}?message=Your+visit+has+been+booked");
+    }
+
+    private string? GetError(string field) =>
+        errors.TryGetValue(field, out var msg) ? msg : null;
+}

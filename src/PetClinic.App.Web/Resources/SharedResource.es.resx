@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="welcome" xml:space="preserve"><value>Bienvenido</value></data>
+  <data name="required" xml:space="preserve"><value>es requerido</value></data>
+  <data name="notFound" xml:space="preserve"><value>no fue encontrado</value></data>
+  <data name="duplicate" xml:space="preserve"><value>ya está en uso</value></data>
+  <data name="owner" xml:space="preserve"><value>Propietario</value></data>
+  <data name="firstName" xml:space="preserve"><value>Nombre</value></data>
+  <data name="lastName" xml:space="preserve"><value>Apellido</value></data>
+  <data name="address" xml:space="preserve"><value>Dirección</value></data>
+  <data name="city" xml:space="preserve"><value>Ciudad</value></data>
+  <data name="telephone" xml:space="preserve"><value>Teléfono</value></data>
+  <data name="owners" xml:space="preserve"><value>Propietarios</value></data>
+  <data name="addOwner" xml:space="preserve"><value>Agregar Propietario</value></data>
+  <data name="findOwner" xml:space="preserve"><value>Buscar Propietario</value></data>
+  <data name="findOwners" xml:space="preserve"><value>Buscar Propietarios</value></data>
+  <data name="updateOwner" xml:space="preserve"><value>Actualizar Propietario</value></data>
+  <data name="vets" xml:space="preserve"><value>Veterinarios</value></data>
+  <data name="name" xml:space="preserve"><value>Nombre</value></data>
+  <data name="specialties" xml:space="preserve"><value>Especialidades</value></data>
+  <data name="none" xml:space="preserve"><value>ninguna</value></data>
+  <data name="pets" xml:space="preserve"><value>Mascotas</value></data>
+  <data name="home" xml:space="preserve"><value>Inicio</value></data>
+  <data name="error" xml:space="preserve"><value>Error</value></data>
+  <data name="telephone.invalid" xml:space="preserve"><value>El teléfono debe tener 10 dígitos</value></data>
+  <data name="layoutTitle" xml:space="preserve"><value>PetClinic :: demostración .NET</value></data>
+  <data name="pet" xml:space="preserve"><value>Mascota</value></data>
+  <data name="birthDate" xml:space="preserve"><value>Fecha de Nacimiento</value></data>
+  <data name="type" xml:space="preserve"><value>Tipo</value></data>
+  <data name="addVisit" xml:space="preserve"><value>Agregar Visita</value></data>
+  <data name="editPet" xml:space="preserve"><value>Editar Mascota</value></data>
+  <data name="ownerInformation" xml:space="preserve"><value>Información del Propietario</value></data>
+  <data name="visitDate" xml:space="preserve"><value>Fecha de Visita</value></data>
+  <data name="editOwner" xml:space="preserve"><value>Editar Propietario</value></data>
+  <data name="addNewPet" xml:space="preserve"><value>Agregar Mascota</value></data>
+  <data name="petsAndVisits" xml:space="preserve"><value>Mascotas y Visitas</value></data>
+</root>

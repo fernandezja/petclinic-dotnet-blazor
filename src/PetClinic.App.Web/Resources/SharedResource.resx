@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true" />
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="welcome" xml:space="preserve"><value>Welcome</value></data>
+  <data name="required" xml:space="preserve"><value>is required</value></data>
+  <data name="notFound" xml:space="preserve"><value>has not been found</value></data>
+  <data name="duplicate" xml:space="preserve"><value>is already in use</value></data>
+  <data name="nonNumeric" xml:space="preserve"><value>must be all numeric</value></data>
+  <data name="duplicateFormSubmission" xml:space="preserve"><value>Duplicate form submission is not allowed</value></data>
+  <data name="typeMismatch.date" xml:space="preserve"><value>invalid date</value></data>
+  <data name="typeMismatch.birthDate" xml:space="preserve"><value>invalid date</value></data>
+  <data name="owner" xml:space="preserve"><value>Owner</value></data>
+  <data name="firstName" xml:space="preserve"><value>First Name</value></data>
+  <data name="lastName" xml:space="preserve"><value>Last Name</value></data>
+  <data name="address" xml:space="preserve"><value>Address</value></data>
+  <data name="city" xml:space="preserve"><value>City</value></data>
+  <data name="telephone" xml:space="preserve"><value>Telephone</value></data>
+  <data name="owners" xml:space="preserve"><value>Owners</value></data>
+  <data name="addOwner" xml:space="preserve"><value>Add Owner</value></data>
+  <data name="findOwner" xml:space="preserve"><value>Find Owner</value></data>
+  <data name="findOwners" xml:space="preserve"><value>Find Owners</value></data>
+  <data name="updateOwner" xml:space="preserve"><value>Update Owner</value></data>
+  <data name="vets" xml:space="preserve"><value>Veterinarians</value></data>
+  <data name="name" xml:space="preserve"><value>Name</value></data>
+  <data name="specialties" xml:space="preserve"><value>Specialties</value></data>
+  <data name="none" xml:space="preserve"><value>none</value></data>
+  <data name="pages" xml:space="preserve"><value>Pages</value></data>
+  <data name="first" xml:space="preserve"><value>First</value></data>
+  <data name="next" xml:space="preserve"><value>Next</value></data>
+  <data name="previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="last" xml:space="preserve"><value>Last</value></data>
+  <data name="somethingHappened" xml:space="preserve"><value>Something happened...</value></data>
+  <data name="pets" xml:space="preserve"><value>Pets</value></data>
+  <data name="home" xml:space="preserve"><value>Home</value></data>
+  <data name="error" xml:space="preserve"><value>Error</value></data>
+  <data name="telephone.invalid" xml:space="preserve"><value>Telephone must be a 10-digit number</value></data>
+  <data name="layoutTitle" xml:space="preserve"><value>PetClinic :: a .NET demonstration</value></data>
+  <data name="pet" xml:space="preserve"><value>Pet</value></data>
+  <data name="birthDate" xml:space="preserve"><value>Birth Date</value></data>
+  <data name="type" xml:space="preserve"><value>Type</value></data>
+  <data name="previousVisits" xml:space="preserve"><value>Previous Visits</value></data>
+  <data name="date" xml:space="preserve"><value>Date</value></data>
+  <data name="description" xml:space="preserve"><value>Description</value></data>
+  <data name="new" xml:space="preserve"><value>New</value></data>
+  <data name="addVisit" xml:space="preserve"><value>Add Visit</value></data>
+  <data name="editPet" xml:space="preserve"><value>Edit Pet</value></data>
+  <data name="ownerInformation" xml:space="preserve"><value>Owner Information</value></data>
+  <data name="visitDate" xml:space="preserve"><value>Visit Date</value></data>
+  <data name="editOwner" xml:space="preserve"><value>Edit Owner</value></data>
+  <data name="addNewPet" xml:space="preserve"><value>Add New Pet</value></data>
+  <data name="petsAndVisits" xml:space="preserve"><value>Pets and Visits</value></data>
+  <data name="error.404" xml:space="preserve"><value>The requested page was not found.</value></data>
+  <data name="error.500" xml:space="preserve"><value>An internal server error occurred.</value></data>
+  <data name="error.general" xml:space="preserve"><value>An unexpected error occurred.</value></data>
+</root>

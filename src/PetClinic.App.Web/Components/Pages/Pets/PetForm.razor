@@ -1,0 +1,121 @@
+@page "/owners/{OwnerId:int}/pets/new"
+@page "/owners/{OwnerId:int}/pets/{PetId:int}/edit"
+@rendermode InteractiveServer
+@inject IOwnerService OwnerService
+@inject NavigationManager Nav
+@inject IValidator<AddPetCommand> AddValidator
+@inject IValidator<UpdatePetCommand> UpdateValidator
+
+<PageTitle>@(IsNew ? "Add Pet" : "Edit Pet") — PetClinic</PageTitle>
+<h2>Pet</h2>
+
+@if (owner is not null)
+{
+    <form class="form-horizontal" @onsubmit="Submit" @onsubmit:preventDefault>
+        <div class="form-group has-feedback">
+            <InputField TValue="string" Label="Name" Value="@name" ValueChanged="v => name = v"
+                        ErrorMessage="@GetError("Name")" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Birth Date</label>
+                <div class="col-sm-10">
+                    <input class="form-control @(GetError("BirthDate") != null ? "is-invalid" : "")"
+                           type="date" @bind="birthDate" />
+                    @if (GetError("BirthDate") is { } bdErr)
+                    {
+                        <div class="invalid-feedback">@bdErr</div>
+                    }
+                </div>
+            </div>
+            <SelectField Label="Type" Items="@petTypeItems"
+                         Value="@selectedTypeId" ValueChanged="v => selectedTypeId = v"
+                         ErrorMessage="@GetError("TypeId")" />
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary" type="submit">
+                    @(IsNew ? "Add Pet" : "Update Pet")
+                </button>
+            </div>
+        </div>
+    </form>
+}
+
+@code {
+    [Parameter] public int OwnerId { get; set; }
+    [Parameter] public int? PetId { get; set; }
+
+    private OwnerDto? owner;
+    private IReadOnlyList<PetTypeDto> petTypes = [];
+    private IEnumerable<SelectItem> petTypeItems = [];
+    private string? name, selectedTypeId;
+    private DateOnly? birthDate;
+    private Dictionary<string, string> errors = [];
+
+    private bool IsNew => PetId is null or 0;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        owner = await OwnerService.GetOwnerByIdAsync(OwnerId);
+        petTypes = await OwnerService.GetPetTypesAsync();
+        petTypeItems = petTypes.Select(t => new SelectItem(t.Id.ToString(), t.Name));
+
+        if (!IsNew && owner is not null)
+        {
+            var pet = owner.Pets.FirstOrDefault(p => p.Id == PetId);
+            if (pet is not null)
+            {
+                name = pet.Name;
+                birthDate = pet.BirthDate;
+                selectedTypeId = petTypes.FirstOrDefault(t => t.Name == pet.TypeName)?.Id.ToString();
+            }
+        }
+    }
+
+    private async Task Submit()
+    {
+        errors = [];
+        DateOnly? birthDate = this.birthDate;
+        int typeId = int.TryParse(selectedTypeId, out var tid) ? tid : 0;
+
+        if (IsNew)
+        {
+            // Check duplicate pet name
+            if (owner?.Pets.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)) == true)
+            {
+                errors["Name"] = "already exists";
+                return;
+            }
+            var cmd = new AddPetCommand(OwnerId, name ?? "", birthDate, typeId);
+            var validation = await AddValidator.ValidateAsync(cmd);
+            if (!validation.IsValid)
+            {
+                errors = validation.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
+                return;
+            }
+            await OwnerService.AddPetAsync(cmd);
+        }
+        else
+        {
+            // Check duplicate pet name (exclude current pet)
+            if (owner?.Pets.Any(p => p.Id != PetId &&
+                string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)) == true)
+            {
+                errors["Name"] = "already exists";
+                return;
+            }
+            var cmd = new UpdatePetCommand(OwnerId, PetId!.Value, name ?? "", birthDate, typeId);
+            var validation = await UpdateValidator.ValidateAsync(cmd);
+            if (!validation.IsValid)
+            {
+                errors = validation.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
+                return;
+            }
+            await OwnerService.UpdatePetAsync(cmd);
+        }
+
+        Nav.NavigateTo($"/owners/{OwnerId}?message=Pet+has+been+saved");
+    }
+
+    private string? GetError(string field) =>
+        errors.TryGetValue(field, out var msg) ? msg : null;
+}

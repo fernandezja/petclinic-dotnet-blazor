@@ -1,0 +1,31 @@
+@typeparam TValue
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">@Label</label>
+    <div class="col-sm-10">
+        <input class="form-control @(HasError ? "is-invalid" : "")"
+               type="@Type"
+               value="@Value"
+               @oninput="OnInput"
+               placeholder="@Label" />
+        @if (HasError)
+        {
+            <div class="invalid-feedback">@ErrorMessage</div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required string Label { get; set; }
+    [Parameter] public string Type { get; set; } = "text";
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? ErrorMessage { get; set; }
+
+    private bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        await ValueChanged.InvokeAsync(e.Value?.ToString());
+    }
+}

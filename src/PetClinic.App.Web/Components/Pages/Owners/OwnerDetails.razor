@@ -1,0 +1,102 @@
+@page "/owners/{OwnerId:int}"
+@rendermode InteractiveServer
+@inject IOwnerService OwnerService
+@inject NavigationManager Nav
+
+<PageTitle>Owner Information — PetClinic</PageTitle>
+
+@if (owner is not null)
+{
+    <h2>Owner Information</h2>
+
+    <AlertMessage Message="@successMessage" Type="success" />
+    <AlertMessage Message="@errorMessage" Type="error" />
+
+    <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <td><b>@owner.FirstName @owner.LastName</b></td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td>@owner.Address</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>@owner.City</td>
+        </tr>
+        <tr>
+            <th>Telephone</th>
+            <td>@owner.Telephone</td>
+        </tr>
+    </table>
+
+    <a href="/owners/@owner.Id/edit" class="btn btn-primary">Edit Owner</a>
+    <a href="/owners/@owner.Id/pets/new" class="btn btn-primary">Add New Pet</a>
+
+    <br /><br /><br />
+    <h2>Pets and Visits</h2>
+
+    <table class="table table-striped">
+        @foreach (var pet in owner.Pets)
+        {
+            <tr>
+                <td valign="top">
+                    <dl class="dl-horizontal">
+                        <dt>Name</dt><dd>@pet.Name</dd>
+                        <dt>Birth Date</dt><dd>@pet.BirthDate?.ToString("yyyy-MM-dd")</dd>
+                        <dt>Type</dt><dd>@pet.TypeName</dd>
+                    </dl>
+                </td>
+                <td valign="top">
+                    <table class="table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Visit Date</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        @foreach (var visit in pet.Visits)
+                        {
+                            <tr>
+                                <td>@visit.Date.ToString("yyyy-MM-dd")</td>
+                                <td>@visit.Description</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td><a href="/owners/@owner.Id/pets/@pet.Id/edit">Edit Pet</a></td>
+                            <td><a href="/owners/@owner.Id/pets/@pet.Id/visits/new">Add Visit</a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else if (notFound)
+{
+    <div class="alert alert-danger">Owner not found with id: @OwnerId</div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter] public int OwnerId { get; set; }
+    [SupplyParameterFromQuery] public string? Message { get; set; }
+    [SupplyParameterFromQuery] public string? Error { get; set; }
+
+    private OwnerDto? owner;
+    private bool notFound;
+    private string? successMessage;
+    private string? errorMessage;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        successMessage = Message;
+        errorMessage = Error;
+        owner = await OwnerService.GetOwnerByIdAsync(OwnerId);
+        notFound = owner is null;
+    }
+}

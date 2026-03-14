@@ -1,0 +1,45 @@
+@if (TotalPages > 1)
+{
+    <div>
+        <span>Pages: [</span>
+        @for (int i = 1; i <= TotalPages; i++)
+        {
+            var pageNum = i;
+            if (CurrentPage == pageNum)
+            {
+                <span>@pageNum </span>
+            }
+            else
+            {
+                <a href="#" @onclick="() => OnPageChange.InvokeAsync(pageNum)" @onclick:preventDefault>@pageNum </a>
+            }
+        }
+        <span>]&nbsp;</span>
+        @if (CurrentPage > 1)
+        {
+            <a href="#" @onclick="() => OnPageChange.InvokeAsync(1)" @onclick:preventDefault title="First" class="fa fa-fast-backward"></a>
+            <a href="#" @onclick="() => OnPageChange.InvokeAsync(CurrentPage - 1)" @onclick:preventDefault title="Previous" class="fa fa-step-backward"></a>
+        }
+        else
+        {
+            <span class="fa fa-fast-backward"></span>
+            <span class="fa fa-step-backward"></span>
+        }
+        @if (CurrentPage < TotalPages)
+        {
+            <a href="#" @onclick="() => OnPageChange.InvokeAsync(CurrentPage + 1)" @onclick:preventDefault title="Next" class="fa fa-step-forward"></a>
+            <a href="#" @onclick="() => OnPageChange.InvokeAsync(TotalPages)" @onclick:preventDefault title="Last" class="fa fa-fast-forward"></a>
+        }
+        else
+        {
+            <span class="fa fa-step-forward"></span>
+            <span class="fa fa-fast-forward"></span>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public int CurrentPage { get; set; } = 1;
+    [Parameter] public int TotalPages { get; set; }
+    [Parameter] public EventCallback<int> OnPageChange { get; set; }
+}

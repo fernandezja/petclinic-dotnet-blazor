@@ -1,0 +1,38 @@
+﻿@page "/Error"
+@page "/oups"
+@using System.Diagnostics
+
+<PageTitle>Error — PetClinic</PageTitle>
+
+@if (IsOups)
+{
+    @* This triggers intentionally to demonstrate error handling *@
+}
+else
+{
+    <h2>Something happened...</h2>
+    <p>An error occurred while processing your request.</p>
+    @if (ShowRequestId)
+    {
+        <p><strong>Request ID:</strong> <code>@RequestId</code></p>
+    }
+}
+
+@code {
+    [CascadingParameter] private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    private bool IsOups { get; set; }
+
+    protected override void OnInitialized()
+    {
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+        if (HttpContext?.Request.Path.Value?.Contains("oups") == true)
+        {
+            IsOups = true;
+            throw new InvalidOperationException(
+                "Expected: controller used to showcase what happens when an exception is thrown");
+        }
+    }
+}

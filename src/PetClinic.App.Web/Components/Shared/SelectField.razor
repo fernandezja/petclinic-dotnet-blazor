@@ -1,0 +1,33 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label">@Label</label>
+    <div class="col-sm-10">
+        <select class="form-control @(HasError ? "is-invalid" : "")"
+                value="@Value"
+                @onchange="OnChange">
+            <option value="">-- Select --</option>
+            @foreach (var item in Items)
+            {
+                <option value="@item.Value" selected="@(item.Value == Value)">@item.Text</option>
+            }
+        </select>
+        @if (HasError)
+        {
+            <div class="invalid-feedback">@ErrorMessage</div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required string Label { get; set; }
+    [Parameter] public IEnumerable<SelectItem> Items { get; set; } = [];
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? ErrorMessage { get; set; }
+
+    private bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+
+    private async Task OnChange(ChangeEventArgs e)
+    {
+        await ValueChanged.InvokeAsync(e.Value?.ToString());
+    }
+}

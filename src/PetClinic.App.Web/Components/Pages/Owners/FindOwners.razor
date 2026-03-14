@@ -1,0 +1,53 @@
+@page "/owners/find"
+@rendermode InteractiveServer
+@inject IOwnerService OwnerService
+@inject NavigationManager Nav
+
+<PageTitle>Find Owners — PetClinic</PageTitle>
+<h2>Find Owners</h2>
+
+<form class="form-horizontal" id="search-owner-form" @onsubmit="Search" @onsubmit:preventDefault>
+    <div class="form-group">
+        <div class="control-group" id="lastNameGroup">
+            <label class="col-sm-2 control-label">Last name</label>
+            <div class="col-sm-10">
+                <input class="form-control" @bind="lastName" size="30" maxlength="80" />
+                @if (notFound)
+                {
+                    <span class="help-inline"><p class="text-danger">has not been found</p></span>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Find Owner</button>
+        </div>
+    </div>
+    <a class="btn btn-primary" href="/owners/new">Add Owner</a>
+</form>
+
+@code {
+    private string lastName = string.Empty;
+    private bool notFound;
+
+    private async Task Search()
+    {
+        notFound = false;
+        var result = await OwnerService.FindOwnersByLastNameAsync(
+            new FindOwnersByLastNameQuery(lastName, 1, 5));
+
+        if (result.TotalCount == 0)
+        {
+            notFound = true;
+        }
+        else if (result.TotalCount == 1)
+        {
+            Nav.NavigateTo($"/owners/{result.Items[0].Id}");
+        }
+        else
+        {
+            Nav.NavigateTo($"/owners?lastName={Uri.EscapeDataString(lastName)}&page=1");
+        }
+    }
+}

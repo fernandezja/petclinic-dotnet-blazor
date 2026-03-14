@@ -1,0 +1,60 @@
+@page "/vets"
+@rendermode InteractiveServer
+@inject IVetService VetService
+
+<PageTitle>Veterinarians — PetClinic</PageTitle>
+<h2>Veterinarians</h2>
+
+@if (result is not null)
+{
+    <table id="vets" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Specialties</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vet in result.Items)
+            {
+                <tr>
+                    <td>@vet.FirstName @vet.LastName</td>
+                    <td>
+                        @if (vet.Specialties.Count == 0)
+                        {
+                            <span>none</span>
+                        }
+                        else
+                        {
+                            @string.Join(" ", vet.Specialties)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <PaginationComponent CurrentPage="@currentPage" TotalPages="@result.TotalPages" OnPageChange="ChangePage" />
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [SupplyParameterFromQuery] public int Page { get; set; } = 1;
+
+    private PagedResult<VetDto>? result;
+    private int currentPage = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        currentPage = Page < 1 ? 1 : Page;
+        result = await VetService.GetVetsPagedAsync(new GetVetsPagedQuery(currentPage, 5));
+    }
+
+    private void ChangePage(int page)
+    {
+        currentPage = page;
+        _ = OnParametersSetAsync();
+    }
+}

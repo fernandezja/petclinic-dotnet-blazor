@@ -1,0 +1,87 @@
+@page "/owners/new"
+@page "/owners/{OwnerId:int}/edit"
+@rendermode InteractiveServer
+@inject IOwnerService OwnerService
+@inject NavigationManager Nav
+@inject IValidator<CreateOwnerCommand> CreateValidator
+@inject IValidator<UpdateOwnerCommand> UpdateValidator
+
+<PageTitle>@(IsNew ? "Add Owner" : "Update Owner") — PetClinic</PageTitle>
+<h2>Owner</h2>
+
+<form class="form-horizontal" id="add-owner-form" @onsubmit="Submit" @onsubmit:preventDefault>
+    <div class="form-group has-feedback">
+        <InputField TValue="string" Label="First Name" Value="@firstName" ValueChanged="v => firstName = v"
+                    ErrorMessage="@GetError("FirstName")" />
+        <InputField TValue="string" Label="Last Name" Value="@lastName" ValueChanged="v => lastName = v"
+                    ErrorMessage="@GetError("LastName")" />
+        <InputField TValue="string" Label="Address" Value="@address" ValueChanged="v => address = v"
+                    ErrorMessage="@GetError("Address")" />
+        <InputField TValue="string" Label="City" Value="@city" ValueChanged="v => city = v"
+                    ErrorMessage="@GetError("City")" />
+        <InputField TValue="string" Label="Telephone" Value="@telephone" ValueChanged="v => telephone = v"
+                    ErrorMessage="@GetError("Telephone")" />
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-primary" type="submit">
+                @(IsNew ? "Add Owner" : "Update Owner")
+            </button>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter] public int? OwnerId { get; set; }
+
+    private string? firstName, lastName, address, city, telephone;
+    private Dictionary<string, string> errors = [];
+    private bool IsNew => OwnerId is null or 0;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!IsNew)
+        {
+            var owner = await OwnerService.GetOwnerByIdAsync(OwnerId!.Value);
+            if (owner is not null)
+            {
+                firstName = owner.FirstName; lastName = owner.LastName;
+                address = owner.Address; city = owner.City; telephone = owner.Telephone;
+            }
+        }
+    }
+
+    private async Task Submit()
+    {
+        errors = [];
+        if (IsNew)
+        {
+            var cmd = new CreateOwnerCommand(firstName ?? "", lastName ?? "",
+                address ?? "", city ?? "", telephone ?? "");
+            var validation = await CreateValidator.ValidateAsync(cmd);
+            if (!validation.IsValid)
+            {
+                errors = validation.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
+                return;
+            }
+            var id = await OwnerService.CreateOwnerAsync(cmd);
+            Nav.NavigateTo($"/owners/{id}?message=New+Owner+Created");
+        }
+        else
+        {
+            var cmd = new UpdateOwnerCommand(OwnerId!.Value, firstName ?? "", lastName ?? "",
+                address ?? "", city ?? "", telephone ?? "");
+            var validation = await UpdateValidator.ValidateAsync(cmd);
+            if (!validation.IsValid)
+            {
+                errors = validation.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
+                return;
+            }
+            await OwnerService.UpdateOwnerAsync(cmd);
+            Nav.NavigateTo($"/owners/{OwnerId}?message=Owner+Values+Updated");
+        }
+    }
+
+    private string? GetError(string field) =>
+        errors.TryGetValue(field, out var msg) ? msg : null;
+}

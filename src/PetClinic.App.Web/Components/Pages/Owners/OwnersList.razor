@@ -1,0 +1,62 @@
+@page "/owners"
+@rendermode InteractiveServer
+@inject IOwnerService OwnerService
+@inject NavigationManager Nav
+
+<PageTitle>Owners — PetClinic</PageTitle>
+<h2>Owners</h2>
+
+@if (result is not null)
+{
+    <table id="owners" class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:150px">Name</th>
+                <th style="width:200px">Address</th>
+                <th>City</th>
+                <th style="width:120px">Telephone</th>
+                <th>Pets</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var owner in result.Items)
+            {
+                <tr>
+                    <td><a href="/owners/@owner.Id">@owner.FirstName @owner.LastName</a></td>
+                    <td>@owner.Address</td>
+                    <td>@owner.City</td>
+                    <td>@owner.Telephone</td>
+                    <td>@string.Join(", ", owner.PetNames)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <PaginationComponent CurrentPage="@currentPage" TotalPages="@result.TotalPages" OnPageChange="ChangePage" />
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [SupplyParameterFromQuery] public string? LastName { get; set; }
+    [SupplyParameterFromQuery] public int Page { get; set; } = 1;
+
+    private PagedResult<OwnerSummaryDto>? result;
+    private int currentPage = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        currentPage = Page < 1 ? 1 : Page;
+        result = await OwnerService.FindOwnersByLastNameAsync(
+            new FindOwnersByLastNameQuery(LastName ?? string.Empty, currentPage, 5));
+
+        if (result.TotalCount == 1)
+            Nav.NavigateTo($"/owners/{result.Items[0].Id}");
+    }
+
+    private void ChangePage(int page)
+    {
+        Nav.NavigateTo($"/owners?lastName={Uri.EscapeDataString(LastName ?? string.Empty)}&page={page}");
+    }
+}

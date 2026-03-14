@@ -1,0 +1,11 @@
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div id="alert-msg" class="alert @(Type == "success" ? "alert-success" : "alert-danger")">
+        <span>@Message</span>
+    </div>
+}
+
+@code {
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public string Type { get; set; } = "success";
+}

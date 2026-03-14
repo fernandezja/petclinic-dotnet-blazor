@@ -1,0 +1,18 @@
+@inject NavigationManager Nav
+
+<li class="nav-item">
+    <a class="@(IsActive ? "nav-link active" : "nav-link")" href="@Href" title="@Text">
+        <span class="fa fa-@Icon" aria-hidden="true"></span>
+        <span>@Text</span>
+    </a>
+</li>
+
+@code {
+    [Parameter, EditorRequired] public required string Href { get; set; }
+    [Parameter, EditorRequired] public required string Icon { get; set; }
+    [Parameter, EditorRequired] public required string Text { get; set; }
+
+    private bool IsActive =>
+        Href == "/" ? Nav.Uri.TrimEnd('/') == Nav.BaseUri.TrimEnd('/')
+                    : Nav.Uri.Contains(Href, StringComparison.OrdinalIgnoreCase);
+}

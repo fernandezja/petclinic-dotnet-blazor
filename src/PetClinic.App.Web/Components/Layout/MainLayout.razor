@@ -1,0 +1,41 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Nav
+
+<nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><span></span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-navbar">
+            <ul class="nav navbar-nav me-auto">
+                <NavMenuLink Href="/" Icon="home" Text="Home" />
+                <NavMenuLink Href="/owners/find" Icon="search" Text="Find owners" />
+                <NavMenuLink Href="/vets" Icon="th-list" Text="Veterinarians" />
+                <NavMenuLink Href="/oups" Icon="exclamation-triangle" Text="Error" />
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="container xd-container">
+        @Body
+
+        <br /><br />
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <img src="/images/dotnet-logo.svg" alt=".NET Logo" class="logo" style="height:50px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
