@@ -1,0 +1,23 @@
+**/.vs
+**/.vscode
+**/.git
+**/.gitignore
+
+# Build outputs
+**/bin
+**/obj
+
+# SQLite dev database
+**/*.db
+**/*.db-shm
+**/*.db-wal
+
+# Test projects
+tests/
+
+# Misc
+**/*.user
+**/Dockerfile*
+**/.dockerignore
+**/docker-compose*.yml
+**/README.md
